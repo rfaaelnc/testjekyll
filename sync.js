@@ -17,7 +17,7 @@ async function sync() {
     });
 
     response.results.forEach(page => {
-      const title = page.properties.Name.title[0].plain_text;
+      const title = page.properties.Title.title[0].plain_text;
       const slug = page.properties.Slug.rich_text[0].plain_text;
       const content = page.properties.Content.rich_text[0].plain_text;
       const category = page.properties.Category.select.name;
