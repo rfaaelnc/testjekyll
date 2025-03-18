@@ -1,34 +1,61 @@
 name: Sincronizar Notion → Jekyll
 on:
   schedule:
-    - cron: '0 * * * *'  # Roda a cada hora
+    - cron: '0 * * * *'  # Executa a cada hora
   workflow_dispatch:      # Permite execução manual
+
+permissions:
+  contents: write        # Permite escrita no repositório
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Checkout do repositório com token de acesso
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          ref: main
+          fetch-depth: 0  # Permite commits em branches protegidos
 
+      # 2. Configura Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
+      # 3. Instala dependências
       - name: Instalar dependências
         run: npm install @notionhq/client
 
-      - name: Executar sincronização
+      # 4. Executa sincronização
+      - name: Sincronizar Notion → Markdown
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: node sync.js
 
+      # 5. Commit e push das alterações
       - name: Commit changes
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add _docs/*
-          git commit -m "Atualizar docs do Notion" || echo "Nenhuma mudança"
-          git push
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Configura URL remota com token
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          
+          # Adiciona todos os arquivos (incluindo novos e excluídos)
+          git add -A
+          
+          # Verifica se há mudanças antes de commitar
+          if ! git diff --cached --quiet; then
+            git commit -m "Atualizar docs do Notion ($(date +'%Y-%m-%d %H:%M:%S'))"
+            git push origin main
+          else
+            echo "Nenhuma mudança detectada"
+          fi
