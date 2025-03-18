@@ -61,13 +61,13 @@ jobs:
           fi
 
       # 6. Configura Ruby e Jekyll
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.2
+     # - name: Setup Ruby
+      #  uses: ruby/setup-ruby@v1
+      #  with:
+      #    ruby-version: 3.2
 
-      - name: Install Jekyll
-        run: gem install bundler && bundle install
+      #- name: Install Jekyll
+     #   run: gem install bundler && bundle install
 
       # 7. Build Jekyll site
       - name: Build Jekyll site
