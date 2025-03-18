@@ -2,6 +2,11 @@ const { Client } = require('@notionhq/client');
 const fs = require('fs');
 const path = require('path');
 
+// Cria a pasta _docs se não existir
+if (!fs.existsSync(path.join(__dirname, '_docs'))) {
+  fs.mkdirSync(path.join(__dirname, '_docs'));
+}
+
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID;
 
