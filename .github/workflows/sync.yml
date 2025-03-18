@@ -59,3 +59,23 @@ jobs:
           else
             echo "Nenhuma mudança detectada"
           fi
+
+      # 6. Configura Ruby e Jekyll
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+
+      - name: Install Jekyll
+        run: gem install bundler && bundle install
+
+      # 7. Build Jekyll site
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+
+      # 8. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
