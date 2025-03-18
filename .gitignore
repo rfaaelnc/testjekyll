@@ -1,0 +1,6 @@
+# Ignorar dependências
+node_modules/
+package-lock.json
+
+# Ignorar arquivos gerados
+.DS_Store
