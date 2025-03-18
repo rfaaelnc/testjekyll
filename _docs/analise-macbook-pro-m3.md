@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Mac
+title: Analise: MacBook Pro M3
 category: Guide
 ---
 
