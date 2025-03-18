@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Analise MacBook Pro M3
-category: Guide
+title: Análise MacBook Pro M3
+category: Review
 ---
 
 # Análise: MacBook Pro M3
