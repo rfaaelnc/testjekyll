@@ -1,5 +1,4 @@
 title: Doc Test
-theme: jekyll-theme-minimal
 permalink: /:slug/
 collections:
   docs:
